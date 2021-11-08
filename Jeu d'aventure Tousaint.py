@@ -2,7 +2,6 @@
 Programme réalisé par Gillot Thomas, 1G7
 """
 import pygame
-
 #initialisation graphique
 pygame.init()
 fenetre = pygame.display.set_mode((1280, 720))
@@ -36,12 +35,15 @@ image8 = pygame.image.load("cabane.png")
 text8 = font.render("Vous êtes dans le cabanon", True, (0, 0, 0))
 text88 = font.render("Vous avez trouvé la clé du grenier", True, (0, 0, 0))
 
-image9 = pygame.image.load("grenier.png")
+image9 = pygame.image.load("grenier sombre.png")
 text9 = font.render("Vous êtes dans le grenier", True, (255, 255, 255))
 
+image10 = pygame.image.load("grenier.png")
+text10 = font.render("Vous êtes dans le grenier", True, (255, 255, 255))
 
 Personnage=1
 clé=0
+lampe=0
 
 def decrireLaPiece(piece):
     if piece==1:
@@ -80,11 +82,16 @@ def decrireLaPiece(piece):
         fenetre.blit(image9,(0,0))
         fenetre.blit(text9,(10,690))
         fenetre.blit(image0,(0,0))
+    elif piece==10:
+        fenetre.blit(image10,(0,0))
+        fenetre.blit(text10,(10,690))
+        fenetre.blit(image0,(0,0))
 
 
 def decision(direction,piece):    #la fonction decision permet de se déplacer
     memorisePiece=piece
     global clé
+    global lampe
 
     if direction=='z':    #Z : le personnage désire aller au nord
         if piece==1:
@@ -95,6 +102,7 @@ def decision(direction,piece):    #la fonction decision permet de se déplacer
             piece=8
             if clé==0:
                 print("Vous avez trouvé la clé du grenier")
+                print("----------------------------------")
                 clé=1
 
     elif direction=='s':    #S : le personnage désire aller au sud
@@ -114,10 +122,16 @@ def decision(direction,piece):    #la fonction decision permet de se déplacer
             piece=5
         elif piece==6:
             piece=4
+        elif piece==7 and lampe==1:
+            piece=10
+            print("Vous avez fini le jeu, vous pouvez quitté en appuyant sur la touche 'l'")
         elif piece==7 and clé==1:
             piece=9
+            print("Vous n'y voyez pas grand chose, allez chercher une lampe de poche")
+            print("-----------------------------------------------------------------")
         else:
-            print("Vous devez trouvez le clé pour accédez au grenier")
+            print("Vous devez trouvé la clé pour accédez au grenier")
+            print("-------------------------------------------------")
 
     elif direction=='q':    #Q : le personnage désire aller à l'ouest
         if piece==1:
@@ -128,11 +142,16 @@ def decision(direction,piece):    #la fonction decision permet de se déplacer
             piece=4
         elif piece==4:
             piece=6
+            if clé==1:
+                lampe=1
+                print("Vous venez de trouvé une lampe de poche d'un un placard")
+                print("-------------------------------------------------------")
         elif piece==9:
             piece=7
 
     if memorisePiece==piece:
         print("Deplacement impossible")
+        print("----------------------")
     return piece
 
 
